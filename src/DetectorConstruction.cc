@@ -257,7 +257,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double ScintHalfLength =1.5*cm;
 	G4double ScintRadius = 2.*cm;
 	
-    G4double ReflectorThickness = 0.5*mm;
+    G4double ReflectorThickness = 0*mm;
 	G4double ReflectorHalfLength = ScintHalfLength+ReflectorThickness;
 	G4double ReflectorRadius = ScintRadius+ReflectorThickness;
 	
@@ -273,17 +273,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
 	// Reflector
 	
-	G4Tubs* solidReflector = new G4Tubs("Reflector",0.*cm,
-										ReflectorRadius,ReflectorHalfLength,StartPhi,DeltaPhi);
+	// G4Tubs* solidReflector = new G4Tubs("Reflector",0.*cm,
+	// 									ReflectorRadius,ReflectorHalfLength,StartPhi,DeltaPhi);
 	
-	G4LogicalVolume* logicReflector = new G4LogicalVolume(solidReflector,MgO,
-														  "Reflector");
+	// G4LogicalVolume* logicReflector = new G4LogicalVolume(solidReflector,MgO,
+	// 													  "Reflector");
 	
-	G4ThreeVector positionReflector = G4ThreeVector(0.*cm,0.*cm,0.*cm);
+	// G4ThreeVector positionReflector = G4ThreeVector(0.*cm,0.*cm,0.*cm);
 	
-	G4VPhysicalVolume* physiReflector = new G4PVPlacement(0,positionReflector,
-														  "Reflector",logicReflector,
-														  physiWorld,false,0);
+	// G4VPhysicalVolume* physiReflector = new G4PVPlacement(0,positionReflector,
+														  // "Reflector",logicReflector,
+														  // physiWorld,false,0);
 	
 	//Crystal
 	
@@ -298,7 +298,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
 	G4VPhysicalVolume* physiCrystal = new G4PVPlacement(0,positionCrystal,
 														"Crystal",logicCrystal,
-														physiReflector,false,0);
+														physiWorld,false,0);
 	
 	
 	// PMT window
@@ -339,16 +339,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	
 	// Reflector - sintillator surface 
 	
-	G4OpticalSurface* OpRefCrySurface = 
-	new G4OpticalSurface("RefCrySurface");
+	// G4OpticalSurface* OpRefCrySurface = 
+	// new G4OpticalSurface("RefCrySurface");
 	
-	OpRefCrySurface->SetType(dielectric_metal);
-	OpRefCrySurface->SetModel(glisur);
-	OpRefCrySurface->SetFinish(polished);
+	// OpRefCrySurface->SetType(dielectric_metal);
+	// OpRefCrySurface->SetModel(glisur);
+	// OpRefCrySurface->SetFinish(polished);
 	
-	G4LogicalBorderSurface* RefCrySurface = 
-    new G4LogicalBorderSurface("RefCrySurface",physiCrystal,
-							   physiReflector,OpRefCrySurface);
+	// G4LogicalBorderSurface* RefCrySurface = 
+ //    new G4LogicalBorderSurface("RefCrySurface",physiCrystal,
+	// 						   physiReflector,OpRefCrySurface);
 	
 	
 	// Scintillator - PMT window surface 
@@ -388,8 +388,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	logicCrystal->SetVisAttributes(Att1);
 	
 	//Yellow color for reflector
-	G4VisAttributes* Att2= new G4VisAttributes(G4Colour(1.0,1.0,0.0));
-	logicReflector->SetVisAttributes(Att2);
+	// G4VisAttributes* Att2= new G4VisAttributes(G4Colour(1.0,1.0,0.0));
+	// logicReflector->SetVisAttributes(Att2);
 	
 	//Blue color for PMT window
 	G4VisAttributes* Att3= new G4VisAttributes(G4Colour(0.0,0.0,1.0));

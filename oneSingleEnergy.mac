@@ -1,0 +1,16 @@
+#
+/control/verbose 2
+/run/verbose 2
+#
+/gps/particle gamma
+/gps/number 1
+/gps/pos/centre  0 0 -80  mm
+/gps/energy 662. keV
+/gps/ang/type iso
+/gps/ang/mintheta 178. degree
+/gps/ang/maxtheta 180. degree
+#
+
+/process/inactivate Cerenkov
+
+/run/beamOn 1000

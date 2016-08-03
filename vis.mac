@@ -1,0 +1,42 @@
+/vis/open VRML2FILE
+
+/run/verbose 2
+/event/verbose 0
+/tracking/verbose 0
+
+# Draw geometry:
+/vis/drawVolume
+
+# Draw smooth trajectories at end of event.
+# Gamma-rays represented in red.
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/set gamma red
+/vis/modeling/trajectories/drawByParticleID-0/set e- green
+/vis/modeling/trajectories/drawByParticleID-0/set opticalphoton blue
+#
+# To draw only gammas and e-:
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add gamma
+/vis/filtering/trajectories/particleFilter-0/add e-
+#
+#
+# To superimpose all of the events from a given run:
+/vis/scene/endOfEventAction accumulate
+#
+# For file-based drivers, use this to create an empty detector view:
+/vis/viewer/flush
+
+## Particle type, position, energy...
+/gps/particle gamma
+/gps/number 1
+/gps/pos/centre  0 0 -2.5  cm
+/gps/energy 170. keV
+/gps/ang/type iso
+/gps/ang/mintheta 180. degree
+/gps/ang/maxtheta 180. degree
+
+/process/inactivate Cerenkov
+
+## Number of events to run
+/run/beamOn 1

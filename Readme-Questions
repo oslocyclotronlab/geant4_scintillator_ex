@@ -1,0 +1,142 @@
+
+
+                         Tue_Optical
+                         -----------
+
+    This example simulates a small scintillator of cylindrical shape. It makes use
+    of the Optical Physics, implemented via Modular Physics List. It also uses
+    macros calling the /gps/ method to simulate monoenergetic gamma-rays generated
+    within a small angular aperture. The Stepping Action class collects information 
+	at three different levels: 
+    1 - Energy deposited in the sensitive volume (LaBr3 crystal)
+    2 - Number of photons produced by the scintillator and/or absorbed by the photocathode
+    3 - Time at which each photon is absorbed
+    This information is passed to the Event Action Class via the eventAction pointer, 
+	and three histograms are produced and written to disk (in the data/ folder).
+    
+    
+ 1 - GEOMETRY DEFINITION
+ 
+     The setup consists of a small LaBr3 cylinder surrounded by MgO reflector, and optically
+     coupled to a Bialkali Photocathode through a Quartz PMT Window. 
+     	 	
+ 2 - HOW TO START?
+ 
+  - Read the code: main.cc (main) and see how the mandatory and optional
+    user actions classes are instantiated and registered. 
+
+  - In the directory src/ and include/, have a look also at the classes 
+    DetectorConstruction, PhysicsList, SteppingAction and EventAction and try 
+	to understand what you see.
+ 
+  - Compile and generate an executable using cmake. In order to do this, create a new 
+    directory Wed_Lec5-build to build and execute the simulation. Enter in this directory 
+    and run cmake to build and compile:
+        % mkdir Wed_Lec5-build
+        % cd Wed_Lec5-build
+        % cmake -DGeant4_DIR=/(...)/geant4.9.6-install/lib64/Geant4-9.6.0  /(...)/Wed_Lec5
+        % make
+ 		
+  - Execute main in batch mode with macro vis.mac that uses the /gps/
+    to generate one single gamma-ray of 170 keV towards the detector (remember to set
+    the enviroment variables to make use of the G4 data for lowEnEM, neutrons, ...):
+	% ./main vis.mac
+	
+	If necessary, change the file vis.mac to use the appropriate visualization driver 
+	installed in your system (OGLX, OpenInventor, HepRep...).
+	
+  - Visualize the output using the appropriate software:
+    % vrmlview g4_00.wrl     (<--- if you use VRML2FILE)	
+	% vrmlview g4_01.wrl     
+	
+	Difficult to see the photon tracks..., too many!! Change the scintillation yield in the 
+	PhysicsList.cc (scint. yield factor: 0.005), recompile, execute and visualize...
+	
+	% vrmlview g4_03.wrl     
+	
+	Now we can see the interactions of the original gamma-ray and the scintillation and reflection of 
+	optical photons. Meanwhile, we can start the next point as it takes long (~10 sec/100 ev).
+	
+  - Change the scintillation yield factor to 0.08, compile and run 1000 events using the oneSingleEnergy macro:
+    % ./main oneSingleEnergy.mac. Check the computing time (given as output on the screen) for
+	                              future reference.
+
+    Have a look at the outputs of the simulation (time, energy and light spectra) stored in the data folder:
+	% cd ../data
+	% ls
+	% root -l plotTimeHist.C
+			  ----> Select TimeHisto.vec	
+		
+	Check the other outputs...	
+		
+  - Remember to change the name of the output files everytime you run a simulation, 
+    otherwise they will be overwritten!!
+
+
+ 3 - PRACTICE
+
+  - Understand the geometry implemented in the DetectorConstruction.cc class. 
+    Execute the simulation using the vis.mac macro. If necessary, change it to use the 
+    appropriate visualization driver installed in your system (OGLX, OpenInventor...).
+
+
+ 4 - TASK 1
+
+    - Modify the SteppingAction.cc to kill the photons as they are produced (no tracking). This skips 
+	  the light transport in the crystal volume and, as a consequence, reduces the computing time 
+	  dramatically. Run the vis.mac to see how this affects the tracks. 
+	  
+	- Change the scintillation yield factor to 0.3, compile and run the oneSingleEnergy.mac. Look at 
+	  the outputs and compare the time histogram and the light histogram with the ones we obtained before. 
+	  Explain the changes. The energy histogram will remain the same as before.
+	
+	- Modify the PhysicsList.cc file to remove completely the use of Optical Physics 
+	  (comment code, don't remove). Check how the computing time changes now. The outputs for light
+	  and time will be empty as no scintillantion happens at all. The energy histogram, however, will
+	  remain the same as before.
+
+     
+   - TASK 2
+ 
+    - Go back to the original SteppingAction.cc and PhysicsList.cc, including the Optical Physics 
+	  and the tracking of photons, and set the scint. yield factor: 0.005. Compile and execute the 
+	  vis.mac to check that the traces are back and everything looks like they did at the beginning.
+	
+	- Modify the geometry to build a much sorter crystal (length: 3 cm instead of 10 cm) with a bigger 
+	  photocathode (radius: 1.9 cm instead of 1.6 cm). Set the scint. yield factor: 0.08.
+	  
+	  Compile and run the oneSingleEnergy.mac with the new geometry. Check the outputs and compare to 
+	  the ones you obtained when using a bigger detector. Check, in particular, the position and resolution 
+	  obtained at the peak (fwhm/mean) in the Light spectrum as well as the rising and decay time in the time 
+	  spectrum. 
+
+
+   - TASK 3 (if you still have time...)
+   
+    - Modify the DetectorConstruction.cc to change the LaBr3 scintillator by NaI (data sheet at the end).
+	  
+	- Again, compile and run the oneSingleEnergy.mac with the new material. Check the outputs and compare to 
+	  the ones you obtained in the previous task. Check, in particular, the resolution obtained at the peak in 
+	  the Light spectrum as well as the rising and decay time in the time spectrum. 
+
+
+ 
+ 
+///////////////////////////
+//                       //
+//  NaI(Tl) Properties   //
+//                       //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// - Components: Na and I in a 1:1 ratio (molar masses: 22.990 g/mole and 126.904 g/mole respectively)	
+// - Density = 3.67 g/cm3
+// 
+// - Refraction Index = 1.85
+// - Absorption Length = 1 m
+// 
+// - Scintillation Yield = 38 photons/keV
+// - Fast Time Constant = 240.0 ns
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+

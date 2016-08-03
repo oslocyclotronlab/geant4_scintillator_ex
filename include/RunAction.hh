@@ -20,6 +20,11 @@ class RunAction : public G4UserRunAction
   public:
     void BeginOfRunAction(const G4Run*);
     void EndOfRunAction(const G4Run*);
+
+	G4double xmin;
+	G4double xmax;
+	G4int binsize;
+	G4int nbins;
 		
 };
 

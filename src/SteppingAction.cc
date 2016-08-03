@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////
 //
-// Oct/2013  E. Nacher -> SteppingAction.cc
+//
 //
 // This class collects information at three different levels: 
 // 1 - Energy deposited in the sensitive volume (LaBr3 crystal)
@@ -16,12 +16,14 @@
 #include "EventAction.hh"
 #include "G4SteppingManager.hh"
 
+#include "G4RunManager.hh"
+
 #include "fstream"
 #include "iomanip"
 
 using namespace std;	 
 
-SteppingAction::SteppingAction(EventAction* EvAct) 
+SteppingAction::SteppingAction(EventAction* EvAct)
 :eventAction(EvAct)
 { }
 
@@ -40,15 +42,16 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 		
 		G4double EdepStep = aStep->GetTotalEnergyDeposit();
 		
-		if (EdepStep > 0.) eventAction->totEnergyDep = eventAction->totEnergyDep + EdepStep;
-		
+		if (EdepStep > 0.) eventAction->EdepInCrystal = eventAction->EdepInCrystal + EdepStep;
+
 		//count scintillating photons and kill the photons after the first step
-//		if (particleName == "opticalphoton"){
-//			eventAction->nAbsPhotons++;
-//			G4double absTime = aStep -> GetPreStepPoint() -> GetGlobalTime();
-//			eventAction-> fillThistogram(absTime);
-//			aStep->GetTrack()->SetTrackStatus(fStopAndKill);
-//		}
+		// if (particleName == "opticalphoton"){
+		// 	eventAction->nAbsPhotons++;
+		// 	eventAction->absTime = aStep -> GetPreStepPoint() -> GetGlobalTime();
+		// 	aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+		// }
+
+
 	}
 	
 	// check if the photon is absorbed in the sensitive volume
@@ -59,11 +62,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 			
 			eventAction->nAbsPhotons++;
 			
-			G4double absTime = aStep -> GetPreStepPoint() -> GetGlobalTime();
-			
-			eventAction-> fillThistogram(absTime);
+			eventAction->absTime = aStep -> GetPreStepPoint() -> GetGlobalTime();
 		} 
 	}
 }
-
 

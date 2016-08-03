@@ -42,6 +42,9 @@ target_link_libraries(main ${Geant4_LIBRARIES})
 set(SCRIPTS
   oneSingleEnergy.mac
   vis.mac
+  init.mac
+  init_vis.mac
+  run1.mac
   )
 
 foreach(_script ${SCRIPTS})

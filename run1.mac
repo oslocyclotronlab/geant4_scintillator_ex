@@ -1,0 +1,13 @@
+## Particle type, position, energy...
+/gps/particle gamma
+/gps/number 1
+/gps/pos/centre  0 0 -2.5  cm
+/gps/energy 170. keV
+/gps/ang/type iso
+/gps/ang/mintheta 180. degree
+/gps/ang/maxtheta 180. degree
+
+/process/inactivate Cerenkov
+
+## Number of events to run
+/run/beamOn 1

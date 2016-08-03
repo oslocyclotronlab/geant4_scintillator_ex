@@ -229,7 +229,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// World
 	//
 	
-	G4double WorldSize= 5.*cm;
+	G4double WorldSize= 30.*cm;
 	
 	G4Box* 
     solidWorld = new G4Box("World",		       	                  //its name
@@ -257,8 +257,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4double ScintHalfLength =1.5*cm;
 	G4double ScintRadius = 2.*cm;
 	
-	G4double ReflectorHalfLength = ScintHalfLength+0.5*mm;
-	G4double ReflectorRadius = ScintRadius+0.5*mm;
+    G4double ReflectorThickness = 0.5*mm;
+	G4double ReflectorHalfLength = ScintHalfLength+ReflectorThickness;
+	G4double ReflectorRadius = ScintRadius+ReflectorThickness;
 	
 	G4double PMTWindowHalfLength = 1.0*mm;
 	G4double PMTWindowRadius = 1.8*cm;
@@ -292,7 +293,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	G4LogicalVolume* logicCrystal = new G4LogicalVolume(solidCrystal,LaBr3,
 														"Crystal");
 	
-	G4ThreeVector positionCrystal = G4ThreeVector(0.*cm,0.*cm,0.*cm);
+	G4ThreeVector positionCrystal = G4ThreeVector(0.*cm,0.*cm,
+                                                  ReflectorThickness);
 	
 	G4VPhysicalVolume* physiCrystal = new G4PVPlacement(0,positionCrystal,
 														"Crystal",logicCrystal,
@@ -308,11 +310,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 														  Quartz,"PMTWindow");
 	
 	G4ThreeVector positionPMTWindow = G4ThreeVector(0.*cm,0.*cm,
-													ScintHalfLength+PMTWindowHalfLength);
+													ReflectorHalfLength+PMTWindowHalfLength);
 	
 	G4VPhysicalVolume* physiPMTWindow = new G4PVPlacement(0,positionPMTWindow,
 														  "PMTWindow",logicPMTWindow,
-														  physiReflector,false,0);
+														  physiWorld,false,0);
 	
 	// Photocathode
 	
@@ -323,7 +325,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 														K2CsSb,"Cathode");
 	
 	G4ThreeVector positionCathode = G4ThreeVector(0.*cm,0.*cm,
-												  ScintHalfLength+2.*PMTWindowHalfLength
+												  ReflectorHalfLength+2.*PMTWindowHalfLength
 												  +CathodeHalfLength);
 	
 	G4VPhysicalVolume* physiCathode = new G4PVPlacement(0,positionCathode,

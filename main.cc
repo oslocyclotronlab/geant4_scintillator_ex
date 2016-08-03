@@ -63,6 +63,11 @@ int main(int argc, char** argv)
   // G4VisManager* visManager = new G4VisExecutive("Quiet");
   visManager->Initialize();
 #endif
+  // initialize G4 kernel
+  runManager->Initialize();
+  
+  // set mandatory user action class
+  runManager->SetUserAction(new PrimaryGeneratorAction);
 
   // Get the pointer to the User Interface manager
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
